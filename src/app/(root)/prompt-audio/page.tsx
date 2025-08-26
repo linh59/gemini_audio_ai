@@ -1,16 +1,21 @@
 import MyForm from "@/app/(root)/prompt-audio/form"
 
 
-const PromptAudio = () => {
+const PromptAudioPage = () => {
 
 
     return (
-        <div className="mx-auto max-w-2xl p-6">
-            {/* Header */}
-            <header className="mb-6">
-                <h1 className="text-2xl font-semibold tracking-tight">Gemini TTS — Single Voice & Multi-Speaker</h1>
+        <div >
+            <div className="mb-4">
+                <h1 className="title">
+                    Single Voice & Multi-Speaker
+                </h1>
+                <p className="text-lg text-muted-foreground font-poppins">
+                    Description
+                </p>
+            </div>
 
-            </header>
+
             <MyForm></MyForm>
 
 
@@ -20,4 +25,4 @@ const PromptAudio = () => {
         </div>
     )
 }
-export default PromptAudio
+export default PromptAudioPage
