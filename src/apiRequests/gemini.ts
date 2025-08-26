@@ -8,8 +8,8 @@ const geminiRequest = {
             body: JSON.stringify(data),
         })
         if (!res.ok) {
-            const e = await res.json().catch(() => ({}));
-            throw new Error(e.message || "Request failed");
+            const err: any = new Error(res.statusText || `HTTP ${res.status}`);
+            throw err;
         }
         return res.blob()
     }
