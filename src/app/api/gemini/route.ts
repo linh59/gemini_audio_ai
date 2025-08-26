@@ -78,10 +78,8 @@ export async function POST(req: Request) {
         }
 
     } catch (err: any) {
-        const msg =
-            err?.statusText ||
-            err?.message ||
-            (typeof err === "string" ? err : "Internal error");
+        const msg = err?.statusText || err?.message 
+        
         const code = Number.isInteger(err?.status) ? err.status : 500;
 
         console.error("Gemini route error:", {

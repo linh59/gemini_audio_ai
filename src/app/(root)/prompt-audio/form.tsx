@@ -1,7 +1,6 @@
 
 'use client'
 import { useState } from "react";
-import { GoogleGenAI } from "@google/genai";
 import { Button } from "@/components/ui/button";
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -12,11 +11,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { GEMINI_TTS_VOICES } from "@/lib/gemini/geminiVoices";
 import { toast } from "sonner";
 import { AudioFormat, AudioFormatValues } from "@/constants/type";
+import { useAudioMutation } from "@/queries/useAudio";
 
 const MyForm = () => {
     const [loading, setLoading] = useState(false)
     const [audioUrl, setAudioUrl] = useState<string | undefined>();
-
+    const audioMutation = useAudioMutation()
     const {
         register,
         control,
@@ -33,20 +33,10 @@ const MyForm = () => {
     })
 
     const onSubmit = async (data: AudioPromptType) => {
-        console.log(data)
         setLoading(true)
         try {
-            const res = await fetch("/api/gemini", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(data),
-            });
-            if (!res.ok) {
-                const e = await res.json().catch(() => ({}));
-                throw new Error(e.message || "Request failed");
-            }
-            const blob = await res.blob();
-            const url = URL.createObjectURL(blob);
+            const res = await audioMutation.mutateAsync(data)
+            const url = URL.createObjectURL(res);
             setAudioUrl(url);
             toast.success('Created');
             reset()
