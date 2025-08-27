@@ -1,6 +1,6 @@
 export default function ManageLayout({
   children
-}: Readonly<{ children: React.ReactNode; params: { locale: string } }>) {
+}: Readonly<{ children: React.ReactNode }>) {
     return (
          <div className="min-h-screen flex w-full bg-background">
      

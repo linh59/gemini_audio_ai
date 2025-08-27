@@ -8,7 +8,7 @@ const geminiRequest = {
             body: JSON.stringify(data),
         })
         if (!res.ok) {
-            const err: any = new Error(res.statusText || `HTTP ${res.status}`);
+            const err: Error = new Error(res.statusText || `HTTP ${res.status}`);
             throw err;
         }
         return res.blob()

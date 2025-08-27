@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
 import { clampBitrate, pcmToMp3, pcmToWav } from "@/lib/gemini/gemini-formatter";
@@ -53,7 +54,7 @@ export async function POST(req: Request) {
         }
 
         const pcmBuffer = Buffer.from(base64, "base64");
-        if (audioFormat == AudioFormat.wav) {
+        if (audioFormat === AudioFormat.wav) {
             const wav = pcmToWav(pcmBuffer);
 
             return new Response(new Uint8Array(wav), {
@@ -64,7 +65,7 @@ export async function POST(req: Request) {
                 },
             });
         }
-        if(audioFormat == AudioFormat.mp3){
+        if(audioFormat === AudioFormat.mp3){
                 const kbps = clampBitrate();
                 const mp3 = pcmToMp3(pcmBuffer, kbps);
                 return new Response(new Uint8Array(mp3), {
@@ -76,18 +77,13 @@ export async function POST(req: Request) {
                 });
             
         }
-
+        return NextResponse.json({ message: 'msg' }, { status: 500 });
     } catch (err: any) {
         const msg = err?.statusText || err?.message 
         
         const code = Number.isInteger(err?.status) ? err.status : 500;
 
-        console.error("Gemini route error:", {
-            code,
-            msg,
-            stack: err?.stack,
-            cause: err?.cause,
-        });
+    
 
         return NextResponse.json({ message: msg }, { status: code });
     }

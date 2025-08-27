@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 
 'use client'
 import { useState } from "react";
@@ -16,6 +17,7 @@ import { useAudioMutation } from "@/queries/useAudio";
 const MyForm = () => {
     const [loading, setLoading] = useState(false)
     const [audioUrl, setAudioUrl] = useState<string | undefined>();
+    const [audioFormat, setAudioFormat] = useState<string | undefined>();
     const audioMutation = useAudioMutation()
     const {
         register,
@@ -38,6 +40,7 @@ const MyForm = () => {
             const res = await audioMutation.mutateAsync(data)
             const url = URL.createObjectURL(res);
             setAudioUrl(url);
+            setAudioFormat(data.audioFormat)
             toast.success('Created');
             reset()
 
@@ -50,7 +53,6 @@ const MyForm = () => {
         }
     }
 
-    const audioFormat = watch("audioFormat")
 
 
 
@@ -131,7 +133,7 @@ const MyForm = () => {
                     <audio src={audioUrl} controls className="w-full max-w-xl" />
                     <a
                         href={audioUrl}
-                        download={audioFormat == AudioFormat.mp3 ? "audio_gemini.mp3" : "audio_gemini.wav"}
+                        download={audioFormat === AudioFormat.mp3 ? "audio_gemini.mp3" : "audio_gemini.wav"}
                         className="w-full inline-flex items-center justify-center rounded-xl border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm transition hover:bg-gray-50 active:scale-[0.99] mt-4"
                     >
                         Download
