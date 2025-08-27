@@ -9,7 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Controller, useForm } from "react-hook-form";
 import { AudioPromptSchema, AudioPromptType } from "@/lib/schema-validations/audio-prompt.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GEMINI_TTS_VOICES } from "@/lib/gemini/geminiVoices";
+import { GEMINI_TTS_VOICES } from "@/lib/gemini/gemini-voices";
 import { toast } from "sonner";
 import { AudioFormat, AudioFormatValues } from "@/constants/type";
 import { useAudioMutation } from "@/queries/useAudio";

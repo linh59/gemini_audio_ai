@@ -19,9 +19,6 @@ const PromptAudioPage = () => {
             <MyForm></MyForm>
 
 
-
-
-
         </div>
     )
 }
