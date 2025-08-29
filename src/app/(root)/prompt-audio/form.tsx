@@ -24,7 +24,6 @@ const MyForm = () => {
         control,
         handleSubmit,
         reset,
-        watch,
         formState: { errors }
     } = useForm<AudioPromptType>({
         resolver: zodResolver(AudioPromptSchema),
