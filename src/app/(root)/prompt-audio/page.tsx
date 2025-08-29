@@ -8,10 +8,10 @@ const PromptAudioPage = () => {
         <div >
             <div className="mb-4">
                 <h1 className="title">
-                    Single Voice & Multi-Speaker
+                    Single Voice
                 </h1>
                 <p className="text-lg text-muted-foreground font-poppins">
-                    Description
+                    Generate audio with one selected voice—clean, consistent, and perfect for narration or tutorials.
                 </p>
             </div>
 

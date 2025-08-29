@@ -60,7 +60,7 @@ const MyForm = () => {
             <div className="clay-card p-6">
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                     <div>
-                        <Label htmlFor="prompt">Prompt</Label>
+                        <Label htmlFor="prompt">Content</Label>
                         <Textarea id="prompt" {...register('prompt')} />
                         {errors.prompt && <p className="text-red-500 text-sm">{errors.prompt.message}</p>}
                     </div>
