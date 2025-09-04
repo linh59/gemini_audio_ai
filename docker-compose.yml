@@ -1,0 +1,21 @@
+services:
+  magic-creator:
+    image: linhnguyenphuong59/magic-creator:${IMAGE_TAG:-latest}
+    container_name: magic-creator
+    # Map port máy bạn -> port trong container (tuỳ app lắng nghe port nào)
+    ports:
+      - "${HOST_PORT:-8081}:${CONTAINER_PORT:-3000}"
+    # Nếu app đọc biến PORT thì truyền vào luôn
+    environment:
+      NODE_ENV: ${NODE_ENV:-production}
+      PORT: ${CONTAINER_PORT:-3000}
+      # Thêm các biến khác của app (nếu có), ví dụ:
+      # API_KEY: ${API_KEY}
+      # BASE_URL: ${BASE_URL}
+    # Nếu app có dữ liệu cần lưu, map volume (đổi đường dẫn trong container cho đúng app của bạn)
+    volumes:
+      - magic_creator_data:/data
+    restart: unless-stopped
+
+volumes:
+  magic_creator_data:

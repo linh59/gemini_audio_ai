@@ -5,12 +5,11 @@ import { clampBitrate, pcmToMp3, pcmToWav } from "@/lib/gemini/gemini-formatter"
 import type { AudioPromptType } from "@/lib/schema-validations/audio-prompt.schema";
 import { AudioFormat } from "@/constants/type";
 
-export const runtime = "nodejs"; // đảm bảo dùng Node (để xài Buffer)
 
 export async function POST(req: Request) {
     try {
         const body = (await req.json()) as AudioPromptType | null;
-        const prompt = body?.prompt?.trim();
+        const prompt = body?.text?.trim();
         const voiceName = body?.voiceName?.trim();
         const audioFormat = body?.audioFormat?.trim();
 
@@ -26,11 +25,37 @@ export async function POST(req: Request) {
             );
         }
 
+
+
         // --- Gọi Gemini ---
         const ai = new GoogleGenAI({ apiKey });
+        const audioPrompt = `
+      You are a text-to-speech voice. Output AUDIO ONLY.
+
+Speaking rate
+- Language: en-US
+- Target speaking rate: 100 words per minute (WPM), allow ±5% variation for naturalness.
+
+Rules
+1) Sentence segmentation
+   - Split the provided text into sentences.
+   - Read each sentence exactly once (no added words, no spelling out punctuation).
+   - After EACH sentence, insert a hard digital silence whose duration equals the time you just spent speaking that sentence to let learners repeat each sentence.
+   - Pace: medium-slow, clear, with pauses between sentences.
+   - Voice: warm, natural, inspiring.
+   - Use gentle enthusiasm and smile in the tone.
+
+2) Output constraints
+   - Audio only. Do not read instructions, labels, or numbers from this prompt.
+   - One pass through the text.
+
+Text to voice:
+${body?.text}
+
+`.trim();
         const geminiRes = await ai.models.generateContent({
             model: "gemini-2.5-flash-preview-tts",
-            contents: [{ parts: [{ text: body?.prompt }] }],
+            contents: [{ role: "user", parts: [{ text: audioPrompt }] }],
             config: {
                 responseModalities: ["AUDIO"],
                 speechConfig: voiceName
@@ -65,25 +90,25 @@ export async function POST(req: Request) {
                 },
             });
         }
-        if(audioFormat === AudioFormat.mp3){
-                const kbps = clampBitrate();
-                const mp3 = pcmToMp3(pcmBuffer, kbps);
-                return new Response(new Uint8Array(mp3), {
-                  headers: {
+        if (audioFormat === AudioFormat.mp3) {
+            const kbps = clampBitrate();
+            const mp3 = pcmToMp3(pcmBuffer, kbps);
+            return new Response(new Uint8Array(mp3), {
+                headers: {
                     "Content-Type": "audio/mpeg",
                     "Content-Disposition": 'inline; filename="audio_gemini.mp3"',
                     "Cache-Control": "no-store",
-                  },
-                });
-            
+                },
+            });
+
         }
         return NextResponse.json({ message: 'msg' }, { status: 500 });
     } catch (err: any) {
-        const msg = err?.statusText || err?.message 
-        
+        const msg = err?.statusText || err?.message
+
         const code = Number.isInteger(err?.status) ? err.status : 500;
 
-    
+
 
         return NextResponse.json({ message: msg }, { status: code });
     }
