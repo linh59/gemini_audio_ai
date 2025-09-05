@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 export async function POST(req: Request) {
     try {
-        const { text, wpm = 120, extraPauseSec = 10, language = "en-US", targetVocab = [] } = await req.json();
+        const { text, wpm = 120, language = "en-US" } = await req.json();
 
         if (!text?.trim()) return NextResponse.json({ message: "Missing text" }, { status: 400 });
 
@@ -22,12 +22,12 @@ export async function POST(req: Request) {
         const responseSchema = {
             type: "object",
             properties: {
-                ssml: { type: "string" },
                 vocab: {
                     type: "array",
                     items: {
                         type: "object",
                         properties: {
+                            id: {type: "string"},
                             term: { type: "string" },
                             partOfSpeech: { type: "string" },
                             meaningEn: { type: "string" },
@@ -39,48 +39,48 @@ export async function POST(req: Request) {
                 },
               
             },
-            required: ["ssml", "vocab"]
+            required: ["vocab"]
         } as const;
 
         const prompt = `
-        You are a TTS script writer. Output VALID SSML ONLY (no comments).
-Goal: Make an “echoing” practice audio in English (US). Baseline speaking rate: 120 words per minute (${wpm}).
-
-Make SSML for echoing. Rules:
-- Wrap the ENTIRE audio in a single <speak>...</speak>.
-- Split TEXT into sentences; each sentence in <p>...</p>.
-- Insert micro-pause after commas: <break time="250ms" /> when natural.
-- After EACH sentence, add echo gap: t_i = ceil((word_count_i / ${wpm})*60 + ${extraPauseSec}) seconds.
-- Emit as <break time="t_i s" />
-- Emphasize target vocab/collocations by wrapping the exact span:
-  <emphasis level="strong"><prosody rate="88%">{span}</prosody></emphasis>.
-- Keep language: ${language}. Use the TEXT exactly (no new facts).
-
-Make Vocab Rules:
-- target word, phrasal verb, collocations related to topic
-- B1-C2 level
-- each item including term, partOfSpeech, meaningEn, meaningVi, example
-
-Text to voice exactly (no added facts):
-${text}
-
-Return JSON with:
-- ssml: a single <speak>...</speak> string including all sentences & breaks.
-- vocab: array of {term, partOfSpeech, meaningEn, meaningVi, example}.
-- prompt: this prompt sent to api
-`.trim();
+        Bạn là một trợ lý AI chuyên về luyện thi IELTS. Nhiệm vụ của bạn là phân tích văn bản đầu vào do người dùng cung cấp (thường là transcript các bài nghe hoặc đọc) và trích xuất, hệ thống hóa các thông tin.
+        Mong muốn danh sách vocabulary trả ra bao gồm các từ vựng, cụm động từ, cụm danh từ, idiom, collocation liên quan đến chủ để của bài và thường xuyên được dùng trong thật tế và trong thi IELTS
+       json
+{
+  "vocab": [
+    {
+    "id": "[ID duy nhất, ví dụ: "vocab_001"]",
+      "term": "[Từ/Cụm từ/Cụm động từ/Collocation/Idiom 1]",
+      "partOfSpeech": "[Loại từ, ví dụ: Noun, Verb, Phrasal Verb, Adjective, Idiom, Collocation]",
+      "meaningEn": "[Nghĩa tiếng Anh]",
+      "meaningVi": "[Nghĩa tiếng Việt]",
+      "example": "[Câu ví dụ từ văn bản hoặc tự tạo, sử dụng từ/cụm từ đó]"
+    },
+    {
+    "id": "[ID duy nhất, ví dụ: "vocab_002"]",
+      "term": "[Từ/Cụm từ/Cụm động từ/Collocation/Idiom 2]",
+      "partOfSpeech": "[Loại từ]",
+      "meaningEn": "[Nghĩa tiếng Anh]",
+      "meaningVi": "[Nghĩa tiếng Việt]",
+      "example": "[Câu ví dụ]"
+    }
+  ]
+}
+       
+        **Văn bản đầu vào của người dùng:**
+        ${text}`.trim();
 
         const res = await ai.models.generateContent({
             model: "gemini-2.5-pro",
             contents: [{ role: "user", parts: [{ text: prompt }] }],
             config: {
                 responseMimeType: "application/json",
-                responseSchema
+                
             }
         });
 
         const data = JSON.parse(res.text ?? "{}");
-        if (!data?.ssml) return NextResponse.json({ message: "No SSML" }, { status: 502 });
+        // if (!data?.ssml) return NextResponse.json({ message: "No SSML" }, { status: 502 });
 
         return NextResponse.json(data, { status: 200 });
     } catch (e: any) {

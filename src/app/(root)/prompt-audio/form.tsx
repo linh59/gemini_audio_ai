@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Controller, useForm } from "react-hook-form";
-import { AudioPromptSchema, AudioPromptType, MainPromptFormValues, MainPromptSchema, MainPromptType, TextPromptType } from "@/lib/schema-validations/audio-prompt.schema";
+import {  AudioPromptType, MainPromptSchema, MainPromptType, TextPromptType } from "@/lib/schema-validations/audio-prompt.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GEMINI_TTS_VOICES } from "@/lib/gemini/gemini-voices";
 import { toast } from "sonner";
@@ -68,6 +68,7 @@ const MyForm = () => {
 
             const res = await textMutation.mutateAsync(data)
             setVocab(res.vocab)
+            localStorage.setItem('vocab', JSON.stringify(res.vocab))
             toast.success('Created');
 
 
@@ -90,7 +91,6 @@ const MyForm = () => {
             setAudioUrl(url);
             setAudioFormat(data.audioFormat)
             toast.success('Created');
-            // reset()
 
         } catch (error: any) {
             toast.error(error?.message.toString() || 'Error');
@@ -100,7 +100,6 @@ const MyForm = () => {
         }
 
     }
-
 
 
 
@@ -203,7 +202,6 @@ const MyForm = () => {
             </div>
             {vocab && (
                 <div className="clay-card p-6 mt-6">
-                    <h3>Vocabulary</h3>
                     <VocabTable data={vocab} total={vocab.length - 1}  ></VocabTable>
                 </div>
             )}

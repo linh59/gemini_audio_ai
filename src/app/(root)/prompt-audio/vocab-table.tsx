@@ -9,9 +9,8 @@ const VocabTable = (props: VocabTableProps) => {
         <TableRow className="border-b border-border/40">
           <TableHead className="text-left font-semibold">Work/Collocations</TableHead>
           <TableHead className="text-left font-semibold">Part of speech</TableHead>
-          <TableHead className="text-left font-semibold hidden md:table-cell">VI</TableHead>
-          <TableHead className="text-left font-semibold">EN</TableHead>
-          <TableHead className="text-left font-semibold hidden lg:table-cell">Example</TableHead>
+          <TableHead className="text-left font-semibold  md:table-cell">VI</TableHead>
+          <TableHead className="text-left font-semibold  lg:table-cell">Example</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody className="divide-y divide-border/40">
@@ -25,7 +24,6 @@ const VocabTable = (props: VocabTableProps) => {
 
                 <TableCell className="font-medium">{item.partOfSpeech}  </TableCell>
                 <TableCell className="font-medium">{item.meaningVi}  </TableCell>
-                <TableCell className="font-medium">{item.meaningEn}  </TableCell>
                 <TableCell className="font-medium">{item.example}  </TableCell>
 
               </TableRow>
