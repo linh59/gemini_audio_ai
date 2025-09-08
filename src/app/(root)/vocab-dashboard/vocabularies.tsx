@@ -1,7 +1,7 @@
 'use client'
 import VocabularyItem from '@/app/(root)/vocab-dashboard/vocabulary-item'
 import { VocabItem } from '@/constants/text-type'
-import React, {  useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 const Vocabularies = () => {
     const [vocabs, setVocabs] = useState<VocabItem[]>()
@@ -9,12 +9,12 @@ const Vocabularies = () => {
     const draggingId = useRef<string | number | null>(null);
     const offset = useRef({ x: 0, y: 0 });
     const lastPos = useRef<XY | null>(null) // vị trí mới nhất trong lúc kéo
+    const vocabLocal = localStorage.getItem('vocab')
+    const json = vocabLocal ? JSON.parse(vocabLocal) : []
+
 
     useEffect(() => {
         try {
-            const vocabLocal = localStorage.getItem('vocab')
-            const json = vocabLocal ? JSON.parse(vocabLocal) : []
-        
             const updatedVocabularies = json.map((vocab: VocabItem) => {
                 if (vocab.position) return vocab
                 return { ...vocab, position: determinneNewPosition() }
@@ -77,7 +77,7 @@ const Vocabularies = () => {
             const p = lastPos.current
             setVocabs(prev => {
                 const next = prev.map(v => (v.id === id ? { ...v, position: p } : v))
-                try { localStorage.setItem('vocab', JSON.stringify(next)) } catch { }
+                localStorage.setItem('vocab', JSON.stringify(next))
                 return next
             })
         }
@@ -92,7 +92,7 @@ const Vocabularies = () => {
             {vocabs?.map(vocab => (
                 <>
                     <VocabularyItem
-                        domRef={el => { vocabRefs.current[vocab.id] = el; }}                 
+                        domRef={el => { vocabRefs.current[vocab.id] = el; }}
                         vocab={vocab}
                         onMouseDown={e => handleDragStart(vocab, e)}
                     />
