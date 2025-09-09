@@ -1,5 +1,5 @@
 'use client'
-import VocabularyItem from '@/app/(root)/vocab-dashboard/vocabulary-item'
+import VocabularyItem from '@/components/vocabularies/vocabulary-item';
 import { VocabItem, VocabulariesProps, XY } from '@/constants/text-type'
 import React, { useRef } from 'react'
 

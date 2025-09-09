@@ -1,4 +1,4 @@
-import VocabDashboard from '@/app/(root)/vocab-dashboard/vocab-dashboard'
+import VocabDashboard from '@/components/vocabularies/vocab-dashboard'
 import React from 'react'
 
 const VocabDashboardPage = () => {

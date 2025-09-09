@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { VocabItem } from '@/constants/text-type';
 
 
-const AddCardForm = ({ onSuccess }: { onSuccess?: () => void }) => {
+const AddVocabForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     const [addLoading, setAddLoading] = useState(false)
     const vocabLocal = localStorage.getItem('vocab')
     const json = vocabLocal ? JSON.parse(vocabLocal) : []
@@ -73,4 +73,4 @@ const AddCardForm = ({ onSuccess }: { onSuccess?: () => void }) => {
     );
 };
 
-export default AddCardForm;
+export default AddVocabForm;

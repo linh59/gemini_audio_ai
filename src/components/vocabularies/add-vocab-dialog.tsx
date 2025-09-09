@@ -2,7 +2,7 @@
 'use client'
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import AddCardForm from '@/components/vocabularies/AddVocabForm';
+import AddVocabForm from '@/components/vocabularies/add-vocab-form';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 
@@ -23,7 +23,7 @@ const AddVocabDialog = ({ onAddSuccess }: { onAddSuccess: () => void }) => {
                     <DialogTitle> Add new term</DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4">
-                    <AddCardForm onSuccess={() => {
+                    <AddVocabForm onSuccess={() => {
                         setIsAddOpen(false)
                         onAddSuccess?.()
                     }} />

@@ -1,6 +1,6 @@
 'use client'
-import Vocabularies from '@/app/(root)/vocab-dashboard/vocabularies'
-import AddVocabDialog from '@/components/vocabularies/AddVocabDialog'
+import AddVocabDialog from '@/components/vocabularies/add-vocab-dialog'
+import Vocabularies from '@/components/vocabularies/vocabularies'
 import { VocabItem, XY } from '@/constants/text-type'
 import React, { useEffect, useState } from 'react'
 
