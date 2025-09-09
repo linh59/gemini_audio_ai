@@ -28,6 +28,7 @@ export type VocabItemProps = {
   vocab: VocabItem,
   domRef?: (el: HTMLDivElement | null) => void;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onDelete?: (id: string) =>  Promise<boolean>;
 }
 
 export type VocabsRef = {
@@ -38,6 +39,7 @@ export type XY = { x: number; y: number };
 
 export type VocabulariesProps = {
   vocabs: VocabItem[],
-  // setVocabs: Dispatch<SetStateAction<VocabItem[]>>;
-   onPositionChange: (id: VocabItem["id"], pos: XY) => void;
+  onPositionChange: (id: VocabItem["id"], pos: XY) => void;
+  onDelete?:  (id: string) => Promise<boolean>;
+
 }

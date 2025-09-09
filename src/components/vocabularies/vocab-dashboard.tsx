@@ -19,12 +19,12 @@ const VocabDashboard = () => {
         localStorage.setItem('vocab', JSON.stringify(updatedVocabularies))
 
     }
-    const updatePosition = (id:string, p:XY) =>{
-         setVocabs(prev => {
-                const next = prev.map(v => (v.id === id ? { ...v, position: p } : v))
-                localStorage.setItem('vocab', JSON.stringify(next))
-                return next
-            })
+    const updatePosition = (id: string, p: XY) => {
+        setVocabs(prev => {
+            const next = prev.map(v => (v.id === id ? { ...v, position: p } : v))
+            localStorage.setItem('vocab', JSON.stringify(next))
+            return next
+        })
     }
     useEffect(() => {
         try {
@@ -44,6 +44,20 @@ const VocabDashboard = () => {
             y: Math.floor(Math.random() * maxY)
         }
     }
+
+    const deleteVocab = async (id: string): Promise<boolean> => {
+       try {
+         setVocabs((prev) => {
+            const deletedVocabs = prev.filter(e => e.id != id)
+            localStorage.setItem('vocab', JSON.stringify(deletedVocabs))
+            return deletedVocabs
+        })
+        return true
+       } catch (error) {
+         console.error(error)
+         return false
+       }
+    }
     return (
         <div>
             <div className="mb-4">
@@ -53,7 +67,7 @@ const VocabDashboard = () => {
                 <AddVocabDialog onAddSuccess={getData} />
             </div>
 
-            <Vocabularies vocabs={vocabs} onPositionChange={updatePosition}></Vocabularies>
+            <Vocabularies vocabs={vocabs} onPositionChange={updatePosition} onDelete={deleteVocab}></Vocabularies>
         </div>
     )
 }

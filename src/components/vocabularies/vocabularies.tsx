@@ -3,7 +3,7 @@ import VocabularyItem from '@/components/vocabularies/vocabulary-item';
 import { VocabItem, VocabulariesProps, XY } from '@/constants/text-type'
 import React, { useRef } from 'react'
 
-const Vocabularies = ({vocabs, onPositionChange}: VocabulariesProps) => {
+const Vocabularies = ({vocabs, onPositionChange, onDelete}: VocabulariesProps) => {
     const vocabRefs = useRef<Record<string | number, HTMLDivElement | null>>({});
     const draggingId = useRef<string | number | null>(null);
     const offset = useRef<XY>({ x: 0, y: 0 });
@@ -56,7 +56,6 @@ const Vocabularies = ({vocabs, onPositionChange}: VocabulariesProps) => {
         lastPos.current = null
     };
 
-
     return (
         <>
             {vocabs?.map(vocab => (
@@ -65,6 +64,7 @@ const Vocabularies = ({vocabs, onPositionChange}: VocabulariesProps) => {
                         domRef={el => { vocabRefs.current[vocab.id] = el; }}
                         vocab={vocab}
                         onMouseDown={e => handleDragStart(vocab, e)}
+                        onDelete={onDelete}
                     />
 
                 </>
