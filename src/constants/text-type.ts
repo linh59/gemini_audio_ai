@@ -1,9 +1,11 @@
+import { Dispatch, SetStateAction } from "react";
+
 export type VocabItem = {
-  id: number;
+  id: string;
   term: string;
   partOfSpeech?: string;
-  meaningEn: string;
-  meaningVi: string;
+  meaningEn?: string;
+  meaningVi?: string;
   example?: string;
   position?: PositionVocab
 };
@@ -30,4 +32,12 @@ export type VocabItemProps = {
 
 export type VocabsRef = {
   style: any,
+}
+
+export type XY = { x: number; y: number };
+
+export type VocabulariesProps = {
+  vocabs: VocabItem[],
+  // setVocabs: Dispatch<SetStateAction<VocabItem[]>>;
+   onPositionChange: (id: VocabItem["id"], pos: XY) => void;
 }

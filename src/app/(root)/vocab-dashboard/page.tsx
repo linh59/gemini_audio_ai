@@ -1,19 +1,10 @@
-import Vocabularies from '@/app/(root)/vocab-dashboard/vocabularies'
+import VocabDashboard from '@/app/(root)/vocab-dashboard/vocab-dashboard'
 import React from 'react'
 
-const VocabDashboard = () => {
+const VocabDashboardPage = () => {
     return (
-        <div>
-            <div className="mb-4">
-                <h1 className="title">
-                    Vocabulary
-                </h1>
-               
-            </div>
-
-            <Vocabularies></Vocabularies>
-        </div>
+      <VocabDashboard/>
     )
 }
 
-export default VocabDashboard
+export default VocabDashboardPage

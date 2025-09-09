@@ -1,42 +1,15 @@
 'use client'
 import VocabularyItem from '@/app/(root)/vocab-dashboard/vocabulary-item'
-import { VocabItem } from '@/constants/text-type'
-import React, { useEffect, useRef, useState } from 'react'
+import { VocabItem, VocabulariesProps, XY } from '@/constants/text-type'
+import React, { useRef } from 'react'
 
-const Vocabularies = () => {
-    const [vocabs, setVocabs] = useState<VocabItem[]>()
+const Vocabularies = ({vocabs, onPositionChange}: VocabulariesProps) => {
     const vocabRefs = useRef<Record<string | number, HTMLDivElement | null>>({});
     const draggingId = useRef<string | number | null>(null);
-    const offset = useRef({ x: 0, y: 0 });
+    const offset = useRef<XY>({ x: 0, y: 0 });
     const lastPos = useRef<XY | null>(null) // vị trí mới nhất trong lúc kéo
-    const vocabLocal = localStorage.getItem('vocab')
-    const json = vocabLocal ? JSON.parse(vocabLocal) : []
 
 
-    useEffect(() => {
-        try {
-            const updatedVocabularies = json.map((vocab: VocabItem) => {
-                if (vocab.position) return vocab
-                return { ...vocab, position: determinneNewPosition() }
-            })
-            setVocabs(updatedVocabularies)
-            localStorage.setItem('vocab', JSON.stringify(updatedVocabularies))
-        } catch (error) {
-            setVocabs([])
-
-        }
-
-    }, [])
-
-    const determinneNewPosition = () => {
-        const maxX = window.innerWidth - 250;
-        const maxY = window.innerHeight - 250;
-
-        return {
-            x: Math.floor(Math.random() * maxX),
-            y: Math.floor(Math.random() * maxY)
-        }
-    }
 
     const handleDragStart = (vocab: VocabItem, e: React.MouseEvent) => {
         draggingId.current = vocab.id;
@@ -73,13 +46,10 @@ const Vocabularies = () => {
     const handleUp = () => {
         window.removeEventListener("mousemove", handleMove);
         if (draggingId.current != null && lastPos.current) {
-            const id = draggingId.current
+            const id = draggingId.current.toString()
             const p = lastPos.current
-            setVocabs(prev => {
-                const next = prev.map(v => (v.id === id ? { ...v, position: p } : v))
-                localStorage.setItem('vocab', JSON.stringify(next))
-                return next
-            })
+            onPositionChange(id, p)
+           
         }
 
         draggingId.current = null

@@ -34,3 +34,10 @@ export const MainPromptSchema = z.object({
 
 export type MainPromptType = z.TypeOf<typeof MainPromptSchema>
 
+export const AddAVocabFormSchema = z.object({
+  term: z.string().trim().min(1, {message: "Term is required"}),
+  meaningVi: z.string().optional(),
+  example: z.string().optional()
+})
+
+export type AddVocabFormType = z.TypeOf<typeof AddAVocabFormSchema>
