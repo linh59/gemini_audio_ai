@@ -1,7 +1,9 @@
 'use client'
 import { Button } from '@/components/ui/button'
 import ConfirmDialog from '@/components/ui/confirm-dialog'
-import { VocabItemProps } from '@/constants/text-type'
+import UpdateVocabDialog from '@/components/vocabularies/update-vocab-dialog'
+import { VocabItem, VocabItemProps } from '@/constants/text-type'
+import clsx from 'clsx'
 import { Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
@@ -10,6 +12,8 @@ import { toast } from 'sonner'
 const VocabularyItem = (props: VocabItemProps) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>()
+  const [updateloading, setUpdateLoading] = useState<boolean>()
+
   const handleDeleteCard = async () => {
     setLoading(true)
     try {
@@ -31,8 +35,11 @@ const VocabularyItem = (props: VocabItemProps) => {
 
 
   }
+
+
   return (
-    <div className="clay-card border-none bg-primary/30 p-6 mt-6"
+    <div
+      className={clsx('clay-card border-none p-6 mt-6 rounded-xl', props.vocab.color)}
       ref={props.domRef}
       key={props.vocab.id}
       style={{
@@ -54,6 +61,8 @@ const VocabularyItem = (props: VocabItemProps) => {
       {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold'> "{props.vocab.example}" </div>}
 
       <div className='mt-2 text-right'>
+        <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
+
         <ConfirmDialog
           open={openDialog}
           onOpenChange={setOpenDialog}

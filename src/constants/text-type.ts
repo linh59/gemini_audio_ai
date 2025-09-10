@@ -1,4 +1,3 @@
-import { Dispatch, SetStateAction } from "react";
 
 export type VocabItem = {
   id: string;
@@ -8,6 +7,7 @@ export type VocabItem = {
   meaningVi?: string;
   example?: string;
   position?: PositionVocab
+  color?: string;
 };
 
 export type PositionVocab = {
@@ -28,18 +28,20 @@ export type VocabItemProps = {
   vocab: VocabItem,
   domRef?: (el: HTMLDivElement | null) => void;
   onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
-  onDelete?: (id: string) =>  Promise<boolean>;
-}
+  onDelete?: (id: string) => Promise<boolean>;
+  onUpdate?: (data: VocabItem) => Promise<boolean>;
 
-export type VocabsRef = {
-  style: any,
 }
-
-export type XY = { x: number; y: number };
 
 export type VocabulariesProps = {
   vocabs: VocabItem[],
-  onPositionChange: (id: VocabItem["id"], pos: XY) => void;
-  onDelete?:  (id: string) => Promise<boolean>;
+  onPositionChange: (id: VocabItem["id"], pos: PositionVocab) => void;
+  onDelete?: (id: string) => Promise<boolean>;
+  onUpdate?: (data: VocabItem) => Promise<boolean>;
 
+}
+
+export type UpdateVocabProps = {
+  vocab: VocabItem,
+  onUpdate?: (data: VocabItem) => Promise<boolean>;
 }

@@ -1,13 +1,13 @@
 'use client'
 import VocabularyItem from '@/components/vocabularies/vocabulary-item';
-import { VocabItem, VocabulariesProps, XY } from '@/constants/text-type'
+import { VocabItem, VocabulariesProps, PositionVocab } from '@/constants/text-type'
 import React, { useRef } from 'react'
 
-const Vocabularies = ({vocabs, onPositionChange, onDelete}: VocabulariesProps) => {
+const Vocabularies = ({ vocabs, onPositionChange, onDelete, onUpdate }: VocabulariesProps) => {
     const vocabRefs = useRef<Record<string | number, HTMLDivElement | null>>({});
     const draggingId = useRef<string | number | null>(null);
-    const offset = useRef<XY>({ x: 0, y: 0 });
-    const lastPos = useRef<XY | null>(null) // vị trí mới nhất trong lúc kéo
+    const offset = useRef<PositionVocab>({ x: 0, y: 0 });
+    const lastPos = useRef<PositionVocab | null>(null) // vị trí mới nhất trong lúc kéo
 
 
 
@@ -49,7 +49,7 @@ const Vocabularies = ({vocabs, onPositionChange, onDelete}: VocabulariesProps) =
             const id = draggingId.current.toString()
             const p = lastPos.current
             onPositionChange(id, p)
-           
+
         }
 
         draggingId.current = null
@@ -65,6 +65,7 @@ const Vocabularies = ({vocabs, onPositionChange, onDelete}: VocabulariesProps) =
                         vocab={vocab}
                         onMouseDown={e => handleDragStart(vocab, e)}
                         onDelete={onDelete}
+                        onUpdate={onUpdate}
                     />
 
                 </>

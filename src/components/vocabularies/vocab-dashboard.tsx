@@ -1,28 +1,30 @@
 'use client'
 import AddVocabDialog from '@/components/vocabularies/add-vocab-dialog'
 import Vocabularies from '@/components/vocabularies/vocabularies'
-import { VocabItem, XY } from '@/constants/text-type'
+import { VocabItem, PositionVocab } from '@/constants/text-type'
+import { UpdateVocabFormType } from '@/lib/schema-validations/audio-prompt.schema'
+import { getVocabsLocal, setVocabsLocal } from '@/lib/utils'
 import React, { useEffect, useState } from 'react'
 
 const VocabDashboard = () => {
     const [vocabs, setVocabs] = useState<VocabItem[]>([])
 
     const getData = () => {
-        const vocabLocal = localStorage.getItem('vocab')
-        const json = vocabLocal ? JSON.parse(vocabLocal) : []
-        console.log(json)
-        const updatedVocabularies = json.map((vocab: VocabItem) => {
+        const vocabLocal = getVocabsLocal()
+        console.log(vocabLocal)
+        const updatedVocabularies = vocabLocal.map((vocab: VocabItem) => {
             if (vocab.position) return vocab
             return { ...vocab, position: determinneNewPosition() }
         })
         setVocabs(updatedVocabularies)
-        localStorage.setItem('vocab', JSON.stringify(updatedVocabularies))
+        setVocabsLocal(updatedVocabularies)
 
     }
-    const updatePosition = (id: string, p: XY) => {
+    const updatePosition = (id: string, p: PositionVocab) => {
         setVocabs(prev => {
             const next = prev.map(v => (v.id === id ? { ...v, position: p } : v))
-            localStorage.setItem('vocab', JSON.stringify(next))
+            setVocabsLocal(next)
+
             return next
         })
     }
@@ -46,17 +48,42 @@ const VocabDashboard = () => {
     }
 
     const deleteVocab = async (id: string): Promise<boolean> => {
-       try {
-         setVocabs((prev) => {
-            const deletedVocabs = prev.filter(e => e.id != id)
-            localStorage.setItem('vocab', JSON.stringify(deletedVocabs))
-            return deletedVocabs
-        })
-        return true
-       } catch (error) {
-         console.error(error)
-         return false
-       }
+        try {
+            setVocabs((prev) => {
+                const deletedVocabs = prev.filter(e => e.id != id)
+                setVocabsLocal(deletedVocabs)
+                return deletedVocabs
+            })
+            return true
+        } catch (error) {
+            console.error(error)
+            return false
+        }
+    }
+
+    const updateVocab = async (data: UpdateVocabFormType): Promise<boolean> => {
+        try {
+            
+            const updatedData: VocabItem = {
+                ...data,
+                term: data.term,
+                meaningEn: data.meaningEn,
+                meaningVi: data.meaningVi,
+                example: data.example,
+                partOfSpeech: data.partOfSpeech,
+                color: data.color
+
+            }
+            setVocabs(prev => {
+                const next = prev.map(v => (v.id === data.id ? { ...v, ...updatedData, id: v.id, position: v.position } : v))
+                setVocabsLocal(next)
+
+                return next
+            })
+            return true;
+        } catch (error) {
+            return false;
+        }
     }
     return (
         <div>
@@ -67,7 +94,7 @@ const VocabDashboard = () => {
                 <AddVocabDialog onAddSuccess={getData} />
             </div>
 
-            <Vocabularies vocabs={vocabs} onPositionChange={updatePosition} onDelete={deleteVocab}></Vocabularies>
+            <Vocabularies vocabs={vocabs} onPositionChange={updatePosition} onDelete={deleteVocab} onUpdate={updateVocab}></Vocabularies>
         </div>
     )
 }

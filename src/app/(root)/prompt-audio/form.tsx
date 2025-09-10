@@ -15,6 +15,7 @@ import { useAudioMutation } from "@/queries/useAudio";
 import { useTextMutation } from "@/queries/useText";
 import { VocabItem } from "@/constants/text-type";
 import VocabTable from "@/app/(root)/prompt-audio/vocab-table";
+import { setVocabsLocal } from "@/lib/utils";
 
 const MyForm = () => {
     const [vocabLoading, setVocabLoading] = useState(false)
@@ -68,7 +69,7 @@ const MyForm = () => {
 
             const res = await textMutation.mutateAsync(data)
             setVocab(res.vocab)
-            localStorage.setItem('vocab', JSON.stringify(res.vocab))
+            setVocabsLocal(res.vocab)
             toast.success('Created');
 
 
