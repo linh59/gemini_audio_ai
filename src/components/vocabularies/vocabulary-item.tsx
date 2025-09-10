@@ -3,9 +3,9 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import ConfirmDialog from '@/components/ui/confirm-dialog'
 import UpdateVocabDialog from '@/components/vocabularies/update-vocab-dialog'
-import { VocabItem, VocabItemProps } from '@/constants/text-type'
+import { VocabItemProps } from '@/constants/text-type'
 import clsx from 'clsx'
-import { Pin, PinIcon, PinOff, PiSquare, Trash2 } from 'lucide-react'
+import { Pin, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -52,42 +52,43 @@ const VocabularyItem = (props: VocabItemProps) => {
       }}
       onMouseDown={props.onMouseDown}
     >
-      <div className='flex justify-between'>
-        <Pin  className='text-primary' size='20'></Pin>
-        {props.vocab.partOfSpeech && <Badge>{props.vocab.partOfSpeech}</Badge>}
-
-      </div>
+      <Pin className='absolute top-3 right-3 text-primary transition-transform rotate-30' size='20'></Pin>
 
 
-      <h3 className=" font-bold text-xl ">
+
+      <h3 className=" font-bold text-xl whitespace-pre-wrap break-words">
         {props.vocab.term}
       </h3>
       {props.vocab.ipa && <div className="mb-3 text-sm ">{props.vocab.ipa}</div>}
 
       {props.vocab.meaningVi && <div className='text-sm '>{props.vocab.meaningVi}</div>}
-      {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold'> "{props.vocab.example}" </div>}
+      {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold'> {props.vocab.example}</div>}
 
-      <div className='mt-2 text-right '>
-        <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
+      <div className='mt-2 flex justify-between items-center'>
+        {props.vocab.partOfSpeech && <Badge variant='secondary' size='sm'>{props.vocab.partOfSpeech}</Badge>}
 
-        <ConfirmDialog
-          open={openDialog}
-          onOpenChange={setOpenDialog}
-          title='Confirm Delete'
-          description='Are you sure you want to delete this card?'
-          trigger={
-            <Button
-              variant="ghost"
-              size="xs"
-            >
-              <Trash2 className="h-4 w-4" />
-            </Button>
-          }
-          onConfirm={handleDeleteCard}
-          confirmText='Confirm'
-          cancelText='Cancel'
-          loading={loading}
-        />
+        <div>
+          <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
+
+          <ConfirmDialog
+            open={openDialog}
+            onOpenChange={setOpenDialog}
+            title='Confirm Delete'
+            description='Are you sure you want to delete this card?'
+            trigger={
+              <Button
+                variant="link"
+                size="xs"
+              >
+                <Trash2 className="h-4 w-4 text-orange-600" />
+              </Button>
+            }
+            onConfirm={handleDeleteCard}
+            confirmText='Confirm'
+            cancelText='Cancel'
+            loading={loading}
+          />
+        </div>
       </div>
     </div>
   )

@@ -1,6 +1,6 @@
 
 import geminiRequest from "@/apiRequests/gemini";
-import { TextPromptType } from "@/lib/schema-validations/text-prompt.schema";
+import { TextPromptType } from "@/lib/schema-validations/audio-prompt.schema";
 import { useMutation } from "@tanstack/react-query";
 
 export const useTextMutation = () => {

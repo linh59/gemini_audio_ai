@@ -11,6 +11,7 @@ import { toast } from 'sonner';
 import { VocabItem } from '@/constants/text-type';
 import { getVocabsLocal, setVocabsLocal } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 
 const AddVocabDialog = ({ onAddSuccess }: { onAddSuccess: () => void }) => {
@@ -75,19 +76,19 @@ const AddVocabDialog = ({ onAddSuccess }: { onAddSuccess: () => void }) => {
                 <div className="space-y-4">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div>
-                            <Input placeholder="New term (Required)" {...register('term')} />
+                            <Textarea placeholder="New term (Required)" {...register('term')} />
                             {errors.term && <p className="text-red-500 text-sm">{errors.term.message}</p>}
                         </div>
 
                         <div>
-                            <Input placeholder="Meaning VI" {...register('meaningVi')} />
+                            <Textarea placeholder="Meaning VI" {...register('meaningVi')} />
                         </div>
                          <div>
-                            <Input placeholder="Meaning En" {...register('meaningEn')} />
+                            <Textarea placeholder="Meaning En" {...register('meaningEn')} />
                         </div>
 
                         <div>
-                            <Input placeholder="Example" {...register('example')} />
+                            <Textarea placeholder="Example" {...register('example')} />
                         </div>
 
 

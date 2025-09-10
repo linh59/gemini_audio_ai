@@ -1,4 +1,3 @@
-import TopNavigation from "@/components/top-navigation";
 
 export default function ManageLayout({
   children
@@ -9,7 +8,7 @@ export default function ManageLayout({
         
         <div className="flex-1 flex flex-col">
           {/* Header */}
-         {/* <TopNavigation/> */}
+         
 
           {/* Main Content */}
           <main className="flex-1 p-6 overflow-auto">

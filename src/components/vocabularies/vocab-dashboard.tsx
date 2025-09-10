@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import AddVocabDialog from '@/components/vocabularies/add-vocab-dialog'
 import Vocabularies from '@/components/vocabularies/vocabularies'

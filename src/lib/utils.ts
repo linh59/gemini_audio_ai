@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { VocabItem } from "@/constants/text-type"
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"

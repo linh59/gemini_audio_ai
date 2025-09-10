@@ -44,12 +44,12 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     const onSubmit = async (data: UpdateVocabFormType) => {
         setLoading(true)
         try {
+
             const res = await onUpdate?.(data)
             if (!res) {
                 toast.error('Error');
                 return;
             }
-            console.log(data)
             setIsOpen(false)
             toast.success('Updated');
             reset();
@@ -82,10 +82,10 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
             <DialogTrigger asChild>
                 <Button
-                    variant="ghost"
+                    variant="link"
                     size="xs"
                 >
-                    <Edit2 className="h-4 w-4" />
+                    <Edit2 className="h-4 w-4 text-primary" />
                 </Button>
             </DialogTrigger>
             <DialogContent>
@@ -95,12 +95,12 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
                 <div className="space-y-4">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         <div>
-                            <Input placeholder="New term (Required)" {...register('term')} />
+                            <Textarea placeholder="New term (Required)" {...register('term')} />
                             {errors.term && <p className="text-red-500 text-sm">{errors.term.message}</p>}
                         </div>
 
                         <div>
-                            <Input placeholder="Meaning VI" {...register('meaningVi')} />
+                            <Textarea placeholder="Meaning VI" {...register('meaningVi')} />
                         </div>
                         <div>
                             <Textarea placeholder="Meaning En" {...register('meaningEn')} />

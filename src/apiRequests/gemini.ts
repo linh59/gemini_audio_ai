@@ -1,6 +1,5 @@
 import { VocabItem } from "@/constants/text-type";
-import { AudioPromptType } from "@/lib/schema-validations/audio-prompt.schema"
-import { TextPromptType } from "@/lib/schema-validations/text-prompt.schema";
+import { AudioPromptType, TextPromptType } from "@/lib/schema-validations/audio-prompt.schema"
 type EchoingTextResponse = {
     ssml: string;
     vocab: VocabItem[];
