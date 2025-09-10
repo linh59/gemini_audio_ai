@@ -39,7 +39,7 @@ const VocabularyItem = (props: VocabItemProps) => {
 
   return (
     <div
-      className={clsx('clay-card border-none p-6 mt-6 rounded-xl', props.vocab.color)}
+      className={clsx('clay-card group border-none p-6 mt-6 rounded-xl', props.vocab.color)}
       ref={props.domRef}
       key={props.vocab.id}
       style={{
@@ -56,18 +56,27 @@ const VocabularyItem = (props: VocabItemProps) => {
 
 
 
-      <h3 className=" font-bold text-xl whitespace-pre-wrap break-words">
+      <h3 className=" font-semibold text-xl whitespace-pre-wrap break-words">
         {props.vocab.term}
       </h3>
       {props.vocab.ipa && <div className="mb-3 text-sm ">{props.vocab.ipa}</div>}
 
-      {props.vocab.meaningVi && <div className='text-sm '>{props.vocab.meaningVi}</div>}
-      {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold'> {props.vocab.example}</div>}
+      {props.vocab.meaningVi && <div className='text-sm whitespace-pre-wrap break-words'>{props.vocab.meaningVi}</div>}
+      {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold whitespace-pre-wrap break-words'> {props.vocab.example}</div>}
 
-      <div className='mt-2 flex justify-between items-center'>
-        {props.vocab.partOfSpeech && <Badge variant='secondary' size='sm'>{props.vocab.partOfSpeech}</Badge>}
-
+      <div className='mt-2 flex justify-between items-end'>
         <div>
+          {props.vocab.partOfSpeech && <Badge variant='secondary' size='sm'>{props.vocab.partOfSpeech}</Badge>}
+
+        </div>
+        <div className="
+      absolute bottom-3 right-3 flex items-center gap-1
+      opacity-0 pointer-events-none
+      group-hover:opacity-100 group-hover:pointer-events-auto
+      group-focus-within:opacity-100
+      transition-opacity duration-150
+      md:opacity-0 md:group-hover:opacity-100
+    ">
           <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
 
           <ConfirmDialog
