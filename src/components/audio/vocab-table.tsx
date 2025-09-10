@@ -1,6 +1,5 @@
-import { Badge } from "@/components/ui/badge";
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from "@/components/ui/table";
-import { VocabItem, VocabTableProps } from "@/constants/text-type";
+import {  VocabTableProps } from "@/constants/text-type";
 
 const VocabTable = (props: VocabTableProps) => {
   return (

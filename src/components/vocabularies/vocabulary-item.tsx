@@ -1,10 +1,11 @@
 'use client'
+import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import ConfirmDialog from '@/components/ui/confirm-dialog'
 import UpdateVocabDialog from '@/components/vocabularies/update-vocab-dialog'
 import { VocabItem, VocabItemProps } from '@/constants/text-type'
 import clsx from 'clsx'
-import { Trash2 } from 'lucide-react'
+import { Pin, PinIcon, PinOff, PiSquare, Trash2 } from 'lucide-react'
 import React, { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -12,7 +13,6 @@ import { toast } from 'sonner'
 const VocabularyItem = (props: VocabItemProps) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>()
-  const [updateloading, setUpdateLoading] = useState<boolean>()
 
   const handleDeleteCard = async () => {
     setLoading(true)
@@ -52,15 +52,22 @@ const VocabularyItem = (props: VocabItemProps) => {
       }}
       onMouseDown={props.onMouseDown}
     >
+      <div className='flex justify-between'>
+        <Pin  className='text-primary' size='20'></Pin>
+        {props.vocab.partOfSpeech && <Badge>{props.vocab.partOfSpeech}</Badge>}
+
+      </div>
+
+
       <h3 className=" font-bold text-xl ">
         {props.vocab.term}
       </h3>
-      {props.vocab.partOfSpeech && <div className="mb-3 text-sm ">{props.vocab.partOfSpeech}</div>
-      }
+      {props.vocab.ipa && <div className="mb-3 text-sm ">{props.vocab.ipa}</div>}
+
       {props.vocab.meaningVi && <div className='text-sm '>{props.vocab.meaningVi}</div>}
       {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold'> "{props.vocab.example}" </div>}
 
-      <div className='mt-2 text-right'>
+      <div className='mt-2 text-right '>
         <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
 
         <ConfirmDialog

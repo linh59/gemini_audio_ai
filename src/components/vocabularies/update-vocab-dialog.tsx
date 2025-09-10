@@ -12,18 +12,13 @@ import { UpdateVocabProps } from '@/constants/text-type';
 import { Input } from '@/components/ui/input';
 import clsx from 'clsx';
 import { Textarea } from '@/components/ui/textarea';
+import { BG_CLASSES } from '@/lib/tailwind/classes';
 
 
 const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false)
-    const BG_CLASSES = [
-        'bg-primary/30',
-        'bg-emerald-500/30',
-        'bg-amber-500/30',
-        'bg-sky-500/30',
-        'bg-red-500/30',
-    ];
+ 
 
     const {
         register,

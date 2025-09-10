@@ -14,8 +14,9 @@ import { AudioFormat, AudioFormatValues } from "@/constants/type";
 import { useAudioMutation } from "@/queries/useAudio";
 import { useTextMutation } from "@/queries/useText";
 import { VocabItem } from "@/constants/text-type";
-import VocabTable from "@/app/(root)/prompt-audio/vocab-table";
 import { setVocabsLocal } from "@/lib/utils";
+import Link from "next/link";
+import VocabTable from "@/components/audio/vocab-table";
 
 const MyForm = () => {
     const [vocabLoading, setVocabLoading] = useState(false)
@@ -196,6 +197,12 @@ const MyForm = () => {
                             disabled={vocabLoading}
                         >
                             {vocabLoading ? "Generating Vocabulary..." : "Generate Vocabulary"}
+                        </Button>
+                        <Button asChild 
+                        variant="outline"
+                        >
+                        <Link href="/vocab-dashboard">Go to Vocabulary Board </Link>
+
                         </Button>
                     </div>
 

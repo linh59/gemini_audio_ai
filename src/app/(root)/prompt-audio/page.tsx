@@ -1,4 +1,4 @@
-import MyForm from "@/app/(root)/prompt-audio/form"
+import MyForm from "@/components/audio/form"
 
 
 const PromptAudioPage = () => {
@@ -14,9 +14,8 @@ const PromptAudioPage = () => {
                     Generate audio with one selected voice—clean, consistent, and perfect for narration or tutorials.
                 </p>
             </div>
-
-
             <MyForm></MyForm>
+
 
 
         </div>

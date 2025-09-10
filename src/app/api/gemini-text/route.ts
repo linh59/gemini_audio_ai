@@ -1,6 +1,7 @@
 // app/api/echoing/prepare/route.ts
 import { NextResponse } from "next/server";
 import { GoogleGenAI } from "@google/genai";
+import { BG_CLASSES } from "@/lib/tailwind/classes";
 
 export const runtime = "nodejs";
 
@@ -51,18 +52,23 @@ export async function POST(req: Request) {
     {
     "id": "[ID duy nhất, ví dụ: "vocab_001"]",
       "term": "[Từ/Cụm từ/Cụm động từ/Collocation/Idiom 1]",
+      "ipa": "[phiên âm theo bảng IPA]"
       "partOfSpeech": "[Loại từ, ví dụ: Noun, Verb, Phrasal Verb, Adjective, Idiom, Collocation]",
       "meaningEn": "[Nghĩa tiếng Anh]",
       "meaningVi": "[Nghĩa tiếng Việt]",
-      "example": "[Câu ví dụ từ văn bản hoặc tự tạo, sử dụng từ/cụm từ đó]"
+      "example": "[Câu ví dụ từ văn bản hoặc tự tạo, sử dụng từ/cụm từ đó]",
+      "color": "[Màu sắc thể hiện sự quan trọng của từ vựng, ví dụ: lấy các màu trong ${BG_CLASSES}
+     
     },
     {
     "id": "[ID duy nhất, ví dụ: "vocab_002"]",
       "term": "[Từ/Cụm từ/Cụm động từ/Collocation/Idiom 2]",
+      "ipa": "[phiên âm theo bảng IPA]"
       "partOfSpeech": "[Loại từ]",
       "meaningEn": "[Nghĩa tiếng Anh]",
       "meaningVi": "[Nghĩa tiếng Việt]",
-      "example": "[Câu ví dụ]"
+      "example": "[Câu ví dụ]",
+       "color": "[Màu sắc]"
     }
   ]
 }

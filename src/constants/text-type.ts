@@ -8,6 +8,7 @@ export type VocabItem = {
   example?: string;
   position?: PositionVocab
   color?: string;
+  ipa?: string;
 };
 
 export type PositionVocab = {
