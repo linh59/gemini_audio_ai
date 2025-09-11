@@ -11,7 +11,7 @@ const VocabDashboard = () => {
    
     return (
         <div>
-            <div className="mb-4">
+            <div className=" flex items-center justify-between">
                 <h1 className="title">
                     Vocabulary
                 </h1>

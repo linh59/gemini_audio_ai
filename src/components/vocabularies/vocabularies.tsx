@@ -11,15 +11,15 @@ const Vocabularies = ({ vocabs, onPositionChange, onDelete, onUpdate }: Vocabula
 
 
     return (
-        <>
+        <div className='relative h-[86vh] border border-dashed rounded-lg p-4 overflow-auto'>
             {vocabs?.map(vocab => (
                 <VocabularyItem
                     key={vocab.id}
                     domRef={el => {
                         if (vocab.id) {
                             vocabRefs.current[vocab.id] = el
-                            
-                        }; 
+
+                        };
                         if (el) el.classList.add('draggable');
                     }}
                     vocab={vocab}
@@ -28,7 +28,7 @@ const Vocabularies = ({ vocabs, onPositionChange, onDelete, onUpdate }: Vocabula
                     onUpdate={onUpdate}
                 />
             ))}
-        </>
+        </div>
     );
 };
 
