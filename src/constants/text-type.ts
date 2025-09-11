@@ -1,6 +1,6 @@
 
 export type VocabItem = {
-  id: string;
+  id?: string;
   term: string;
   partOfSpeech?: string;
   meaningEn?: string;
@@ -28,7 +28,7 @@ export type VocabTableProps = {
 export type VocabItemProps = {
   vocab: VocabItem,
   domRef?: (el: HTMLDivElement | null) => void;
-  onMouseDown?: React.MouseEventHandler<HTMLDivElement>;
+  onPointerDown?: React.PointerEventHandler<HTMLDivElement>;
   onDelete?: (id: string) => Promise<boolean>;
   onUpdate?: (data: VocabItem) => Promise<boolean>;
 
@@ -36,7 +36,7 @@ export type VocabItemProps = {
 
 export type VocabulariesProps = {
   vocabs: VocabItem[],
-  onPositionChange: (id: VocabItem["id"], pos: PositionVocab) => void;
+  onPositionChange: (id: string, pos: PositionVocab) => void;
   onDelete?: (id: string) => Promise<boolean>;
   onUpdate?: (data: VocabItem) => Promise<boolean>;
 
@@ -45,4 +45,8 @@ export type VocabulariesProps = {
 export type UpdateVocabProps = {
   vocab: VocabItem,
   onUpdate?: (data: VocabItem) => Promise<boolean>;
+}
+
+export type AddVocabProps = {
+  onAddSuccess?: (data: VocabItem) => Promise<boolean>;
 }

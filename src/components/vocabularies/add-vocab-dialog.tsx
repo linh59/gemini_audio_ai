@@ -8,16 +8,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { AddAVocabFormSchema, AddVocabFormType } from '@/lib/schema-validations/audio-prompt.schema';
 import { toast } from 'sonner';
-import { VocabItem } from '@/constants/text-type';
-import { getVocabsLocal, setVocabsLocal } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
+import { AddVocabProps, VocabItem } from '@/constants/text-type';
 import { Textarea } from '@/components/ui/textarea';
 
 
-const AddVocabDialog = ({ onAddSuccess }: { onAddSuccess: () => void }) => {
+const AddVocabDialog = ({ onAddSuccess }: AddVocabProps) => {
     const [isAddOpen, setIsAddOpen] = useState(false);
     const [addLoading, setAddLoading] = useState(false)
-    const vocabLocal = getVocabsLocal()
 
     const {
         register,
@@ -39,19 +36,22 @@ const AddVocabDialog = ({ onAddSuccess }: { onAddSuccess: () => void }) => {
         setAddLoading(true)
         try {
             const newItem: VocabItem = {
-                id: 'vocab_0' + (vocabLocal.length + 1),
                 term: data.term,
                 meaningVi: data.meaningVi,
                 meaningEn: data.meaningEn,
                 partOfSpeech: data.partOfSpeech,
                 example: data.example
             }
-            const vocabList = [...vocabLocal, newItem]
-            setVocabsLocal(vocabList)
+            const res = await onAddSuccess?.(newItem);
+             if (!res) {
+                toast.error('Error');
+                return;
+            }
+
             setIsAddOpen(false)
             toast.success('Added');
             reset();
-            onAddSuccess?.();
+            
         } catch (err) {
 
             toast.error(err as string);

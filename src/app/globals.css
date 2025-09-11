@@ -166,6 +166,21 @@
       0 6px 20px rgba(0, 0, 0, 0.15),
       inset 0 1px 0 rgba(255, 255, 255, 0.9);
   }
+
+  .draggable {
+    margin-top: 0 !important;
+    position: absolute;
+    cursor: "move";
+    width: 300;
+    user-select: none;
+
+    will-change: transform;
+  }
+
+  .draggable.dragging {
+    transition: none !important;
+  }
+
 }
 
 

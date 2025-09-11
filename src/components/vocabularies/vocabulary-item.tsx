@@ -13,10 +13,13 @@ import { toast } from 'sonner'
 const VocabularyItem = (props: VocabItemProps) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>()
-
   const handleDeleteCard = async () => {
     setLoading(true)
     try {
+      if(!props.vocab.id) {
+        toast.error('Item not found')
+        return;
+      }
       const res = await props.onDelete?.(props.vocab.id)
       if (!res) {
         toast.error('Failed to delete or item not found')
@@ -39,18 +42,14 @@ const VocabularyItem = (props: VocabItemProps) => {
 
   return (
     <div
-      className={clsx('clay-card group border-none p-6 mt-6 rounded-xl', props.vocab.color)}
+      className={clsx('draggable clay-card group  border-none p-6 mt-0 rounded-xl', props.vocab.color)}
       ref={props.domRef}
       key={props.vocab.id}
       style={{
-        position: 'absolute',
         left: `${props.vocab.position?.x}px`,
         top: `${props.vocab.position?.y}px`,
-        cursor: "move",
-        width: 300,
-        userSelect: 'none'
       }}
-      onMouseDown={props.onMouseDown}
+      onPointerDown={props.onPointerDown}
     >
       <Pin className='absolute top-3 right-3 text-primary transition-transform rotate-30' size='20'></Pin>
 
@@ -69,6 +68,7 @@ const VocabularyItem = (props: VocabItemProps) => {
           {props.vocab.partOfSpeech && <Badge variant='secondary' size='sm'>{props.vocab.partOfSpeech}</Badge>}
 
         </div>
+        
         <div className="
       absolute bottom-3 right-3 flex items-center gap-1
       opacity-0 pointer-events-none
@@ -76,10 +76,10 @@ const VocabularyItem = (props: VocabItemProps) => {
       group-focus-within:opacity-100
       transition-opacity duration-150
       md:opacity-0 md:group-hover:opacity-100
-    ">
+    " >
           <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
 
-          <ConfirmDialog
+          <ConfirmDialog  
             open={openDialog}
             onOpenChange={setOpenDialog}
             title='Confirm Delete'

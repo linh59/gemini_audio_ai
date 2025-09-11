@@ -8,8 +8,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { UpdateVocabFormSchema, UpdateVocabFormType } from '@/lib/schema-validations/audio-prompt.schema';
 import { toast } from 'sonner';
-import { UpdateVocabProps } from '@/constants/text-type';
-import { Input } from '@/components/ui/input';
+import { UpdateVocabProps, VocabItem } from '@/constants/text-type';
 import clsx from 'clsx';
 import { Textarea } from '@/components/ui/textarea';
 import { BG_CLASSES } from '@/lib/tailwind/classes';
@@ -44,8 +43,16 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     const onSubmit = async (data: UpdateVocabFormType) => {
         setLoading(true)
         try {
-
-            const res = await onUpdate?.(data)
+            const updatedData: VocabItem = {
+                id: data.id,
+                term: data.term,
+                meaningVi: data.meaningVi,
+                meaningEn: data.meaningEn,
+                partOfSpeech: data.partOfSpeech,
+                example: data.example,
+                color: data.color
+            }
+            const res = await onUpdate?.(updatedData)
             if (!res) {
                 toast.error('Error');
                 return;
@@ -148,7 +155,7 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
 
                             {/* Thẻ dùng Tailwind + biến CSS cho background */}
                             <div
-                                className={clsx('clay-card border-none p-6 mt-6 rounded-xl', colorHex)}
+                                className={clsx('clay-card border-none p-6 mt-6 rounded-md', colorHex)}
 
                             >
                                 Content
