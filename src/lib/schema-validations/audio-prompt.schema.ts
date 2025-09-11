@@ -2,7 +2,7 @@ import { AudioFormatValues } from "@/constants/type";
 import z from "zod";
 
 export const AudioPromptSchema = z.object({
-  text: z.string().trim().min(1, { message: "Context is required" }),
+  text: z.string().trim().min(1, { message: "This field is required" }),
   voiceName: z.string(),
   audioFormat: z.enum(AudioFormatValues)
 }).strict()
@@ -10,7 +10,7 @@ export const AudioPromptSchema = z.object({
 export type AudioPromptType = z.TypeOf<typeof AudioPromptSchema>
 
 export const TextPromptSchema = z.object({
-  text: z.string().trim().min(1, { message: "Context is required" }),
+  text: z.string().trim().min(1, { message: "CThis fields required" }),
 }).strict()
 
 export type TextPromptType = z.TypeOf<typeof TextPromptSchema>
@@ -18,7 +18,7 @@ export type TextPromptType = z.TypeOf<typeof TextPromptSchema>
 
 export const MainPromptSchema = z.object({
   action: z.enum(['audio', 'vocab']),
-  text: z.string().trim().min(1, { message: "Context is required" }),
+  text: z.string().trim().min(1, { message: "This field is required" }),
   voiceName: z.string().optional(),
   audioFormat: z.enum(AudioFormatValues).optional()
 }).superRefine((val, ctx) => {

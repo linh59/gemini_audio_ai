@@ -112,13 +112,13 @@ const MyForm = () => {
             <div className="clay-card p-6">
                 <form className="space-y-4">
                     <div>
-                        <Label htmlFor="text">Content</Label>
-                        <Textarea id="text" {...register('text')} />
+                        
+                        <Textarea placeholder="English text" {...register('text')} />
                         {errors.text && <p className="text-red-500 text-sm">{errors.text.message}</p>}
                     </div>
 
                     <div>
-                        <Label htmlFor="voice">Voice</Label>
+                       
                         <Controller
                             control={control}
                             name="voiceName"
@@ -144,7 +144,7 @@ const MyForm = () => {
 
                     </div>
                     <div>
-                        <Label htmlFor="format">Format</Label>
+                       
                         <Controller
                             control={control}
                             name="audioFormat"
