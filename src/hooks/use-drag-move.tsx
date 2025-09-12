@@ -1,4 +1,3 @@
-// use-drag-move.ts
 import { useCallback, useEffect, useRef } from "react";
 import type { PositionVocab, VocabItem } from "@/constants/text-type";
 
@@ -10,13 +9,23 @@ export const useDragMove = ({ onPositionChange }: UseDragMoveProps) => {
   const onChangeRef = useRef(onPositionChange);
   useEffect(() => { onChangeRef.current = onPositionChange; }, [onPositionChange]);
 
-  // refs dùng nội bộ
   const vocabRefs = useRef<Record<string | number, HTMLDivElement | null>>({});
   const draggingId = useRef<string | number | null>(null);
+
   const offset = useRef<PositionVocab>({ x: 0, y: 0 });
   const startPos = useRef<{ x: number; y: number } | null>(null);
   const lastDelta = useRef<PositionVocab>({ x: 0, y: 0 });
+
+  const startPointer = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
+  const isDragging = useRef(false);
   const raf = useRef<number | null>(null);
+
+  const THRESHOLD2 = 9; // 3px ^ 2
+
+  const isInteractive = (el: HTMLElement | null) =>
+    !!el?.closest(
+      'button, a, input, textarea, select, [contenteditable="true"], [data-no-drag]'
+    );
 
   const handleMove = useCallback((e: PointerEvent) => {
     const id = draggingId.current;
@@ -32,9 +41,18 @@ export const useDragMove = ({ onPositionChange }: UseDragMoveProps) => {
     const absX = e.clientX - offset.current.x - cRect.left + container.scrollLeft;
     const absY = e.clientY - offset.current.y - cRect.top  + container.scrollTop;
 
-    // chỉ translate theo delta so với gốc
+    // delta so với gốc
     const dx = absX - startPos.current.x;
     const dy = absY - startPos.current.y;
+
+    // chưa chính thức kéo -> kiểm tra ngưỡng
+    if (!isDragging.current) {
+      const d2 = (e.clientX - startPointer.current.x) ** 2 + (e.clientY - startPointer.current.y) ** 2;
+      if (d2 < THRESHOLD2) return; // coi như click/focus bình thường
+      isDragging.current = true;
+      el.classList.add("dragging");
+    }
+
     lastDelta.current = { x: dx, y: dy };
 
     if (raf.current) cancelAnimationFrame(raf.current);
@@ -42,42 +60,51 @@ export const useDragMove = ({ onPositionChange }: UseDragMoveProps) => {
       el.style.transform = `translate3d(${dx}px, ${dy}px, 0)`;
     });
 
+    // chỉ chặn chọn text/scroll khi đang kéo
     e.preventDefault();
   }, []);
 
   const finishDrag = useCallback(() => {
-    // dọn listener + rAF
     window.removeEventListener("pointermove", handleMove);
     window.removeEventListener("pointerup", finishDrag);
     window.removeEventListener("pointercancel", finishDrag);
     if (raf.current) cancelAnimationFrame(raf.current);
 
     const id = draggingId.current;
+    const dragged = isDragging.current;
+
     if (id != null && startPos.current) {
       const el = vocabRefs.current[id];
       if (el) {
-        const finalLeft = Math.round(startPos.current.x + lastDelta.current.x);
-        const finalTop  = Math.round(startPos.current.y + lastDelta.current.y);
-
-        el.style.transform = "";
-        el.style.left = `${finalLeft}px`;
-        el.style.top  = `${finalTop}px`;
-        el.classList.remove("dragging");
-
-        onChangeRef.current?.(String(id), { x: finalLeft, y: finalTop });
+        if (dragged) {
+          const finalLeft = Math.round(startPos.current.x + lastDelta.current.x);
+          const finalTop  = Math.round(startPos.current.y + lastDelta.current.y);
+          el.style.transform = "";
+          el.style.left = `${finalLeft}px`;
+          el.style.top  = `${finalTop}px`;
+          el.classList.remove("dragging");
+          onChangeRef.current?.(String(id), { x: finalLeft, y: finalTop });
+        } else {
+          // click thuần: dọn style tạm
+          el.style.transform = "";
+          el.classList.remove("dragging");
+        }
       }
     }
+
     draggingId.current = null;
     startPos.current = null;
     lastDelta.current = { x: 0, y: 0 };
+    isDragging.current = false;
   }, [handleMove]);
 
   const handleDown = useCallback((vocab: VocabItem, e: React.PointerEvent<HTMLElement>) => {
-    draggingId.current = vocab.id;
-    const el = vocabRefs.current[vocab.id];
-    if (!el) return;
+    // nếu click vào phần tử tương tác -> KHÔNG drag
+    if (isInteractive(e.target as HTMLElement)) return;
 
-    el.classList.add("dragging");
+    draggingId.current = vocab.id ?? null;
+    const el =  vocab.id ? vocabRefs.current[vocab.id] : null;
+    if (!el) return;
 
     const container = (el.offsetParent as HTMLElement) || document.body;
     const rect = el.getBoundingClientRect();
@@ -92,16 +119,15 @@ export const useDragMove = ({ onPositionChange }: UseDragMoveProps) => {
       y: rect.top  - cRect.top  + container.scrollTop,
     };
     lastDelta.current = { x: 0, y: 0 };
+    startPointer.current = { x: e.clientX, y: e.clientY };
+    isDragging.current = false;
 
-
+    // KHÔNG preventDefault ở đây để inputs nhận focus bình thường
     window.addEventListener("pointermove", handleMove, { passive: false });
     window.addEventListener("pointerup", finishDrag, { once: true });
     window.addEventListener("pointercancel", finishDrag, { once: true });
-
-    e.preventDefault();
   }, [handleMove, finishDrag]);
 
-  // dọn dẹp nếu unmount giữa lúc đang kéo
   useEffect(() => {
     return () => {
       window.removeEventListener("pointermove", handleMove);
@@ -111,8 +137,5 @@ export const useDragMove = ({ onPositionChange }: UseDragMoveProps) => {
     };
   }, [handleMove, finishDrag]);
 
-  return {
-    vocabRefs,
-    handleDown, 
-  };
+  return { vocabRefs, handleDown };
 };

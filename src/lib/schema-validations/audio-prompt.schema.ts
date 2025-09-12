@@ -45,7 +45,6 @@ export const AddAVocabFormSchema = z.object({
 export type AddVocabFormType = z.TypeOf<typeof AddAVocabFormSchema>
 
 export const UpdateVocabFormSchema = z.object({
-  id: z.string(),
   term: z.string().trim().min(1, { message: "Term is required" }),
   meaningVi: z.string().optional(),
   meaningEn: z.string().optional(),

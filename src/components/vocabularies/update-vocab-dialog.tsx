@@ -29,7 +29,6 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     } = useForm<UpdateVocabFormType>({
         resolver: zodResolver(UpdateVocabFormSchema),
         defaultValues: {
-            id: vocab.id,
             term: vocab.term,
             meaningVi: vocab.meaningVi,
             meaningEn: vocab.meaningEn,
@@ -41,10 +40,14 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     });
 
     const onSubmit = async (data: UpdateVocabFormType) => {
+        if(!vocab.id){
+              toast.error('No item found');
+                return;
+        }
+
         setLoading(true)
         try {
             const updatedData: VocabItem = {
-                id: data.id,
                 term: data.term,
                 meaningVi: data.meaningVi,
                 meaningEn: data.meaningEn,
@@ -52,7 +55,7 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
                 example: data.example,
                 color: data.color
             }
-            const res = await onUpdate?.(updatedData)
+            const res = await onUpdate?.(vocab.id, updatedData)
             if (!res) {
                 toast.error('Error');
                 return;
@@ -75,7 +78,6 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     useEffect(() => {
         if (isOpen) {
             reset({
-                id: vocab.id,
                 term: vocab.term,
                 meaningVi: vocab.meaningVi,
                 meaningEn: vocab.meaningEn,

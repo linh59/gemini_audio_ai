@@ -11,8 +11,7 @@ const PromptAudioPage = () => {
                     Single Voice
                 </h1>
                 <p className="text-lg text-muted-foreground font-poppins">
-                    Generate audio with one selected voice—clean, consistent, and perfect for narration or tutorials.
-                </p>
+                    Paste English text to generate audio or a study-ready vocabulary list, then learn on the Vocabulary page with draggable sticky notes.                </p>
             </div>
             <MyForm></MyForm>
 

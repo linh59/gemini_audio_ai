@@ -76,8 +76,9 @@ const VocabularyItem = (props: VocabItemProps) => {
       group-focus-within:opacity-100
       transition-opacity duration-150
       md:opacity-0 md:group-hover:opacity-100
+      z-100
     " >
-          <UpdateVocabDialog vocab={props.vocab} onUpdate={props.onUpdate} />
+          <UpdateVocabDialog  vocab={props.vocab} onUpdate={props.onUpdate} />
 
           <ConfirmDialog  
             open={openDialog}
