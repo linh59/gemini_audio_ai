@@ -1,5 +1,4 @@
 import { PositionVocab } from "@/constants/text-type"
-import { useLayoutEffect, useState } from "react";
 
 export const useDeterminePosition = () => {
     const CARD_W = 300;
@@ -32,8 +31,6 @@ export const useDeterminePosition = () => {
         return { x: Math.floor(Math.random() * maxX), y: Math.floor(Math.random() * maxY) };
     };
 
-    // useLayoutEffect(() => {
-    //    gridCols()
-    // }, [cols]);
+   
     return { determineByIndex, determineWithoutIndex };
 }
