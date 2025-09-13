@@ -5,19 +5,20 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Edit2 } from 'lucide-react';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState } from 'react';
+import { use, useEffect, useState } from 'react';
 import { UpdateVocabFormSchema, UpdateVocabFormType } from '@/lib/schema-validations/audio-prompt.schema';
 import { toast } from 'sonner';
 import { UpdateVocabProps, VocabItem } from '@/constants/text-type';
 import clsx from 'clsx';
 import { Textarea } from '@/components/ui/textarea';
 import { BG_CLASSES } from '@/lib/tailwind/classes';
+import { useVocabRedux } from '@/hooks/use-vocab-redux';
 
 
 const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [loading, setLoading] = useState(false)
- 
+    const {updateVocab} = useVocabRedux();
 
     const {
         register,
@@ -40,9 +41,9 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
     });
 
     const onSubmit = async (data: UpdateVocabFormType) => {
-        if(!vocab.id){
-              toast.error('No item found');
-                return;
+        if (!vocab.id) {
+            toast.error('No item found');
+            return;
         }
 
         setLoading(true)
@@ -55,7 +56,9 @@ const UpdateVocabDialog = ({ vocab, onUpdate }: UpdateVocabProps) => {
                 example: data.example,
                 color: data.color
             }
-            const res = await onUpdate?.(vocab.id, updatedData)
+            // const res = await onUpdate?.(vocab.id, updatedData)
+            const res = await updateVocab(vocab.id, updatedData)
+
             if (!res) {
                 toast.error('Error');
                 return;

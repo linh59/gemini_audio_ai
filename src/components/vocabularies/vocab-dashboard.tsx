@@ -1,12 +1,14 @@
 'use client'
 import AddVocabDialog from '@/components/vocabularies/add-vocab-dialog'
 import Vocabularies from '@/components/vocabularies/vocabularies'
-import { useVocab } from '@/queries/use-vocab'
+import { useVocab } from '@/hooks/use-vocab'
+import { useVocabRedux } from '@/hooks/use-vocab-redux'
 import React from 'react'
 
 const VocabDashboard = () => {
-    const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocab()
+    // const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocab()
    
+    const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocabRedux()
 
    
     return (

@@ -60,7 +60,7 @@ const VocabularyItem = (props: VocabItemProps) => {
       </h3>
       {props.vocab.ipa && <div className="mb-3 text-sm ">{props.vocab.ipa}</div>}
 
-      {props.vocab.meaningVi && <div className='text-sm whitespace-pre-wrap break-words'>{props.vocab.meaningVi}</div>}
+      {props.vocab.meaningVi && <div className='mt-2 text-sm whitespace-pre-wrap break-words'>{props.vocab.meaningVi}</div>}
       {props.vocab.meaningVi && <div className='text-sm mt-2 italic font-semibold whitespace-pre-wrap break-words'> {props.vocab.example}</div>}
 
       <div className='mt-2 flex justify-between items-end'>

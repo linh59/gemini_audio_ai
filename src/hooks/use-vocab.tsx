@@ -1,4 +1,4 @@
-import { useEffect, useState, useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import type { PositionVocab, VocabItem } from "@/constants/text-type";
 import { getVocabsLocal, setVocabsLocal } from "@/lib/utils";
 import { useDeterminePosition } from "@/hooks/use-determine-position-index";
@@ -47,14 +47,14 @@ export const useVocab = () => {
     // API
     const reload = () => {
         const data = getVocabsLocal();
-        if(!data || data.length === 0) {
+        if (!data || data.length === 0) {
             dispatch({ type: 'GET', payload: [] });
             return;
         }
         const withPos = data.map((v: VocabItem, i: number) =>
             v.position ? v : { ...v, position: determineByIndex(i) }
         );
-        dispatch({ type: 'GET', payload: withPos})
+        dispatch({ type: 'GET', payload: withPos })
     };
 
     const addVocab = async (data: VocabItem): Promise<boolean> => {
@@ -89,10 +89,11 @@ export const useVocab = () => {
     };
 
     const deleteVocab = async (id: string): Promise<boolean> => {
-        try { 
+        try {
             // setVocabs(prev => prev.filter(v => v.id !== id)); 
             dispatch({ type: 'DELETE', payload: id });
-            return true; }
+            return true;
+        }
         catch { return false; }
     };
 
