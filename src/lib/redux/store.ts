@@ -1,7 +1,8 @@
 import { configureStore, createListenerMiddleware, isAnyOf } from '@reduxjs/toolkit'
-import vocab, { ADD, DELETE, reloadFromLocal, UPDATE } from "./features/vocabSlice";
+import vocab, { ADD, DELETE, UPDATE } from "./features/vocabSlice";
 import { setVocabsLocal } from '@/lib/utils';
 import {  GET, UPDATE_POSITION,  } from "./features/vocabSlice";
+import { reloadFromLocal } from '@/lib/redux/features/vocabThunks';
 
 const vocabListener = createListenerMiddleware();
 

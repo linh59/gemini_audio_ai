@@ -1,6 +1,7 @@
 'use-client'
 import { PositionVocab, VocabItem } from "@/constants/text-type";
-import { ADD, DELETE, reloadFromLocal, selectVocabs, UPDATE, UPDATE_POSITION } from "@/lib/redux/features/vocabSlice";
+import { ADD, DELETE, selectVocabs, UPDATE, UPDATE_POSITION } from "@/lib/redux/features/vocabSlice";
+import { reloadFromLocal } from "@/lib/redux/features/vocabThunks";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { determineWithoutIndex } from "@/lib/vocab/position";
 import {  useEffect } from "react";
@@ -10,7 +11,7 @@ export const useVocabRedux = () =>{
     const vocabs = useAppSelector(selectVocabs);
 
     useEffect(() =>{
-        dispatch((reloadFromLocal()));
+        dispatch(reloadFromLocal());
     }, [dispatch]);
 
     return {
