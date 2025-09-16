@@ -2,13 +2,12 @@
 import AddVocabDialog from '@/components/vocabularies/add-vocab-dialog'
 import Vocabularies from '@/components/vocabularies/vocabularies'
 import { useVocab } from '@/hooks/use-vocab'
-import { useVocabRedux } from '@/hooks/use-vocab-redux'
 import React from 'react'
 
 const VocabDashboard = () => {
-    // const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocab()
+    const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocab()
    
-    const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocabRedux()
+    // const {vocabs, addVocab, updatePosition, updateVocab, deleteVocab} = useVocabRedux()
 
    
     return (
@@ -19,7 +18,6 @@ const VocabDashboard = () => {
                 </h1>
                 <AddVocabDialog onAddSuccess={addVocab} />
             </div>
-
             <Vocabularies vocabs={vocabs} onPositionChange={updatePosition} onDelete={deleteVocab} onUpdate={updateVocab}></Vocabularies>
         </div>
     )

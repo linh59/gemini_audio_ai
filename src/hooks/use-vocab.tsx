@@ -16,6 +16,11 @@ export const useVocab = () => {
         | { type: 'UPDATE'; payload: { id: string; data: Partial<VocabItem> } }
         | { type: 'DELETE'; payload: string };
 
+    // type ActionTypes =
+    //     | { type: 'NEXT' }
+    //     | { type: 'PREV' }
+    //     | { type: 'SET_PAGE', page: number }
+
     // Reducer function to handle state changes
     const reducer = (state: VocabItem[], action: VocabAction) => {
         switch (action.type) {
@@ -27,6 +32,7 @@ export const useVocab = () => {
                 return state.map((v: VocabItem) => (v.id === action.payload.id ? { ...v, position: action.payload.position } : v));
             case 'UPDATE':
                 return state.map((v: VocabItem) => (v.id === action.payload.id ? { ...v, ...action.payload.data } : v));
+
             case 'DELETE':
                 return state.filter((v: VocabItem) => v.id !== action.payload);
             default:
@@ -34,7 +40,6 @@ export const useVocab = () => {
         }
     }
     const [vocabs, dispatch] = useReducer(reducer, [])
-
 
     useEffect(() => {
         reload()
@@ -54,6 +59,7 @@ export const useVocab = () => {
         const withPos = data.map((v: VocabItem, i: number) =>
             v.position ? v : { ...v, position: determineByIndex(i) }
         );
+
         dispatch({ type: 'GET', payload: withPos })
     };
 
